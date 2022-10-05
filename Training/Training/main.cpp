@@ -3,43 +3,41 @@
 #include <string>
 #include <chrono>
 #include <ctime>
-#include "Operations.h"
+#include "CashRegisters.h"
+#include "Customers.h"
+#include "RandomNumberGenerator.h"
+#include <thread>
+
 
 
 int main()
 {
-	std::string username = "";
-	std::string password = "";
-	bool isLogin = false;
-	std::ifstream inputFile;
-	std::ofstream outputFile;
-
-	username = read_username();
-	password = read_password();
-
-	inputFile.open("LoginCredentials.txt");
-	if (!inputFile.is_open()) {
-		std::cout << "File not opened of the file does not exist!";
-		exit(EXIT_FAILURE);
+	std::vector<Customer> groupOfCustomers;
+	int numberOfCustomers = 30;
+	CashRegisters firstCashRegister{ "first" };
+	CashRegisters secondCashRegister("second");
+	for (int i = 0; i < numberOfCustomers; ++i) {
+		;
+		groupOfCustomers.push_back(Customer { std::to_string(i), randomNumberGenerator(0, 50),
+			randomNumberGenerator(0, 20) });
 	}
+	
+	numberOfCustomers--;
 
-	isLogin = verify_credentials(inputFile, username, password);
-
-	if (isLogin == true) {
-		std::cout << "Login successfull";
-		outputFile.open("HistoryOfLogging.txt", std::ios_base::app);
+	while (numberOfCustomers > 1) {
+		if (firstCashRegister.getTimeNeddedToSatisfyAllCustomers() <
+			secondCashRegister.getTimeNeddedToSatisfyAllCustomers()) {
+			std::thread th(firstCashRegister, groupOfCustomers.at(numberOfCustomers));
+			th.join();
+		}
+		else {
+			std::thread th(secondCashRegister, groupOfCustomers.at(numberOfCustomers));
+			th.join();
+		}
 		
-		auto start = std::chrono::system_clock::now();
-		auto legacyStart = std::chrono::system_clock::to_time_t(start);
-		//std::cout << std::ctime(&legacyStart) << '\n';
-		char buff[100];
-		ctime_s(buff, 100, &legacyStart);
-		outputFile << username << " logged at " << buff << std::endl;
-		outputFile.close();
+
+		numberOfCustomers--;
 	}
 
-
-
-	inputFile.close();
 	return 0;
 }
