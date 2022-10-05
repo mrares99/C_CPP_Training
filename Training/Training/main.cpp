@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
+#include <ctime>
 #include "Operations.h"
 
 
@@ -8,9 +10,9 @@ int main()
 {
 	std::string username = "";
 	std::string password = "";
-	bool checkUsername = false;
-	bool checkPassword = false;
+	bool isLogin = false;
 	std::ifstream inputFile;
+	std::ofstream outputFile;
 
 	username = read_username();
 	password = read_password();
@@ -21,12 +23,23 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 
-	checkUsername = check_if_username_exists(inputFile, username);
-	checkPassword = check_if_password_exists(inputFile, password);
+	isLogin = verify_credentials(inputFile, username, password);
 
-	if (checkPassword == true && checkUsername == true) {
+	if (isLogin == true) {
 		std::cout << "Login successfull";
+		outputFile.open("HistoryOfLogging.txt", std::ios_base::app);
+		
+		auto start = std::chrono::system_clock::now();
+		auto legacyStart = std::chrono::system_clock::to_time_t(start);
+		//std::cout << std::ctime(&legacyStart) << '\n';
+		char buff[100];
+		ctime_s(buff, 100, &legacyStart);
+		outputFile << username << " logged at " << buff << std::endl;
+		outputFile.close();
 	}
 
+
+
+	inputFile.close();
 	return 0;
 }

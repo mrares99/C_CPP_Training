@@ -48,22 +48,33 @@ std::string get_password(std::string& input) {
 	return input.substr(startIndex + 1, input.length());
 }
 
-bool check_if_username_exists(std::ifstream &inputFile, std::string username) {
-	std::string line = "";
-	while (getline(inputFile, line)) {
-		if (get_username(line).compare(username) == 0) {
-			return true;
+bool verify_credentials(std::ifstream& inputFile, std::string username,
+						std::string password) {
+	if (inputFile.is_open()) {
+		std::string line = "";
+		bool isUsername = false;
+		bool isPassword = false;
+		while (getline(inputFile, line)) {
+			isUsername = check_if_username_exists(line, username);
+			isPassword = check_if_password_exists(line, password);
+			if (isUsername == true && isPassword == true) {
+				return true;
+			}
 		}
 	}
 	return false;
 }
 
-bool check_if_password_exists(std::ifstream &inputFile, std::string password) {
-	std::string line = "";
-	while (getline(inputFile, line)) {
-		if (get_password(line).compare(password) == 0) {
-			return true;
-		}
+bool check_if_username_exists(std::string line, std::string username) {
+	if (get_username(line).compare(username) == 0) {
+		return true;
+	}
+	return false;
+}
+
+bool check_if_password_exists(std::string line, std::string password) {
+	if (get_password(line).compare(password) == 0) {
+		return true;
 	}
 	return false;
 }
