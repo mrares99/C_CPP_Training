@@ -53,6 +53,6 @@ T Person<T>::getTemplateField() {
 
 template<typename T>
 void Person<T>::printFields() {
-	std::cout << "Name= " << name << " Age=" << age <<
-		" Template field=" << templateField << std::endl;
+	std::cout << "Name=" << name << "   Age=" << age <<
+		"   Template field=" << templateField << std::endl;
 }

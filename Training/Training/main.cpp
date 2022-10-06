@@ -1,53 +1,30 @@
 #include <iostream>
 #include <string>
+#include <memory>
 
 #include "Person.h"
 #include "Person.cpp" //I know it is wrong, but without doing this, I have a linker issue
 
 int main()
 {
-	Person<int> person1;
-	person1.printFields();
+	std::unique_ptr<Person<int>> person(nullptr);
+	person = std::make_unique<Person<int>>(new Person<int>{});
+	person->printFields();
+	person.reset(); //free the memory
 
-	Person<double> person2{};
-	person2.printFields();
+	std::unique_ptr<Person<int>> person2 = std::make_unique<Person<int>>(new Person<int>{});
+	person2->printFields();
 
-	Person<std::string>* person3 = new Person<std::string>;
+	std::shared_ptr<Person<int>> person3(nullptr);
+	person3 = std::make_shared<Person<int>>(new Person<int>{});
 	person3->printFields();
 
-
-	Person<int> person4{ "Andrei", 25, 5 };
-	person4.printFields();
-
-	Person<int>* person5 = new Person<int>{ "Calin", 29, 0 };
-	person5->printFields();
-	person5->setTemplateField(5);
-	person5->printFields();
-
-	Person<std::string> person6("Iulian", 340, "Iuli");
-	person6.printFields();
-
-	Person<std::string> *person7 = new Person<std::string>("Andras", 234, "Andreiut");
-	person7->printFields();
-
-	//Person<int> person8 = Person<int>("Rares", 234, 34);
-	//person8.printFields();
-
-	Person<int> cpyPerson{ "rares", 234, 234 };
-	cpyPerson.printFields();
-	Person<int> cpyPerson1 = cpyPerson;
-	cpyPerson1.printFields();
-	Person<int> cpyPerson2(cpyPerson);
-	cpyPerson2.printFields();
-
-	Person<int>* cpyPerson3 = new Person<int>{ "asd", 23, 23 };
-	cpyPerson3->printFields();
-	Person<int>* cpyPerson4 = new Person<int>(*cpyPerson3);
-	cpyPerson4->printFields();
-
-	delete person3;
-	delete person5;
-	delete person7;
+	std::shared_ptr<Person<int>> person4(nullptr);
+	person4 = person3; // Increment counter references
+	std::shared_ptr<Person<int>> person5(nullptr);
+	person5 = person4;
+	
+	std::weak_ptr<Person<int>> person5(person3);
 
 	return 0;
 }
