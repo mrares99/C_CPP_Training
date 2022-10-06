@@ -14,6 +14,13 @@ Person<T>::Person(std::string name, int age, T templateField) :
 {}
 
 template<typename T>
+Person<T>::Person(Person& person) {
+	name = person.name;
+	age = person.age;
+	templateField = person.templateField;
+}
+
+template<typename T>
 void Person<T>::setName(std::string name) {
 	this->name = name;
 }

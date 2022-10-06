@@ -30,6 +30,21 @@ int main()
 	Person<std::string> *person7 = new Person<std::string>("Andras", 234, "Andreiut");
 	person7->printFields();
 
+	//Person<int> person8 = Person<int>("Rares", 234, 34);
+	//person8.printFields();
+
+	Person<int> cpyPerson{ "rares", 234, 234 };
+	cpyPerson.printFields();
+	Person<int> cpyPerson1 = cpyPerson;
+	cpyPerson1.printFields();
+	Person<int> cpyPerson2(cpyPerson);
+	cpyPerson2.printFields();
+
+	Person<int>* cpyPerson3 = new Person<int>{ "asd", 23, 23 };
+	cpyPerson3->printFields();
+	Person<int>* cpyPerson4 = new Person<int>(*cpyPerson3);
+	cpyPerson4->printFields();
+
 	delete person3;
 	delete person5;
 	delete person7;

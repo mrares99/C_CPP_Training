@@ -12,6 +12,7 @@ private:
 public:
 	Person();
 	Person(std::string name, int age, T templateField);
+	Person(Person& person);
 	void setName(std::string name);
 	void setAge(int age);
 	void setTemplateField(T templateField);
