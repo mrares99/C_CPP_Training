@@ -1,58 +1,38 @@
 #include "Person.h"
+
+#include <string>
 #include <iostream>
 
-template<typename T>
-Person<T>::Person() {
-	std::cout << "Default constructor called ";
-	this->name = "Default";
-	this->age = 0;
-}
-
-template<typename T>
-Person<T>::Person(std::string name, int age, T templateField) :
-			name{name}, age{age}, templateField{templateField}
+Person::Person(std::string identifier, std::string name, int age) :
+				identifier{identifier}, name{name}, age{age}
 {}
 
-template<typename T>
-Person<T>::Person(Person& person) {
-	name = person.name;
-	age = person.age;
-	templateField = person.templateField;
+void Person::set_identifier(const std::string identifier) {
+	this->identifier = identifier;
 }
 
-template<typename T>
-void Person<T>::setName(std::string name) {
+void Person::set_name(const std::string name) {
 	this->name = name;
 }
 
-template<typename T>
-void Person<T>::setAge(int age) {
+void Person::set_age(const int age) {
 	this->age = age;
 }
 
-template<typename T>
-void Person<T>::setTemplateField(T templateField) {
-	this->templateField = templateField;
+std::string Person::get_identifier() {
+	return identifier;
 }
 
-template<typename T>
-std::string Person<T>::getName() {
-	return this->name;
+std::string Person::get_name() {
+	return name;
 }
 
-template<typename T>
-int Person<T>::getAge() {
-	return this->age;
+int Person::get_age() {
+	return age;
 }
 
-template<typename T>
-T Person<T>::getTemplateField() {
-	return this->templateField;
+void Person::print_information() {
+	std::cout << "Identifier=" << identifier << " Name=" << name
+		<< " Age=" << age << std::endl;
 }
 
-
-template<typename T>
-void Person<T>::printFields() {
-	std::cout << "Name=" << name << "   Age=" << age <<
-		"   Template field=" << templateField << std::endl;
-}

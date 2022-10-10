@@ -3,23 +3,20 @@
 
 #include <string>
 
-template<typename T>
 class Person {
 private:
+	std::string identifier;
 	std::string name;
 	int age;
-	T templateField;
 public:
-	Person();
-	Person(std::string name, int age, T templateField);
-	Person(Person& person);
-	void setName(std::string name);
-	void setAge(int age);
-	void setTemplateField(T templateField);
-	std::string getName();
-	int getAge();
-	T getTemplateField();
-	void printFields();
+	Person(std::string identifier, std::string name, int age);
+	void set_identifier(const std::string identifier);
+	void set_name(const std::string name);
+	void set_age(const int age);
+	std::string get_identifier();
+	std::string get_name();
+	int get_age();
+	virtual void print_information();
 };
 
 #endif
